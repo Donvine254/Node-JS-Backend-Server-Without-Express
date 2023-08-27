@@ -71,6 +71,12 @@ const server = http.createServer(async (req, res) => {
     });
 
   }
+  else if(req.method === "GET" && req.url === "/"){
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.writeHead(307, { Location: "/users" });
+    res.end();
+  }
   else {
     // Handle other routes or methods
     res.statusCode = 404;

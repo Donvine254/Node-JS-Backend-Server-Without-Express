@@ -3,8 +3,7 @@ This is a full CRUD backend server that uses Node.js runtime, sqlite and sequali
 
 To start the database, 
 ```js
-node sync #sync the database
-node seed #seed the database
+npm build #to sync the database and seed the data
 npm start #start the development server
 ```
 Naviagate to /users

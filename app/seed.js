@@ -23,7 +23,7 @@ async function seedDatabase() {
 
     console.log('Database seeded');
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('Error seeding database:', error.message);
   } finally {
     sequelize.close(); // Close the connection when done
   }

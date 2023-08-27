@@ -1,7 +1,7 @@
 const http = require("node:http");
 const hostname = "127.0.0.1";
 const port = 4000;
-const User = require("./model");
+const User = require("./app/model");
 
 const server = http.createServer(async (req, res) => {
   if (req.method === "GET" && req.url === "/users") {

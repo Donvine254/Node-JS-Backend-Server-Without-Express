@@ -3,7 +3,7 @@
 
 To start the database, 
 ```js
-npm build #to sync the database and seed the data
+npm run build #to sync the database and seed the data
 npm start #start the development server
 ```
-Naviagate to /users
+Navigate to /users

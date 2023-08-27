@@ -4,6 +4,7 @@ const port = 4000;
 const User = require("./app/model");
 
 const server = http.createServer(async (req, res) => {
+  //get all users from the database
   if (req.method === "GET" && req.url === "/users") {
     // Set the response status and content type
     res.statusCode = 200;
@@ -11,7 +12,21 @@ const server = http.createServer(async (req, res) => {
     const users = await User.findAll();
     // Convert the user object to JSON and send it as the response
     res.end(JSON.stringify(users));
-  } else if (req.method === "POST" && req.url === "/users") {
+  } 
+  //get a specific user
+  else if(req.method === "GET" && req.url.startsWith('/users/')){
+    const userId = req.url.split("/")[2]
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    const user = await User.findOne({
+      where:{
+        id: userId
+      }
+    });
+    res.end(JSON.stringify(user));
+  }
+  //create a user
+  else if (req.method === "POST" && req.url === "/users") {
     res.statusCode = 201;
     res.setHeader("Content-Type", "application/json");
     let body = "";
@@ -19,17 +34,17 @@ const server = http.createServer(async (req, res) => {
       body += chunk.toString();
     });
     req.on("end", async () => {
-      console.log(body);
       const data = JSON.parse(body);
       try {
         const newUser = await User.create(data) 
         res.end(JSON.stringify(newUser));
       } catch (error) {
-        console.error("Error creating user:", error);
+        console.error("Error creating user:", error.message);
         res.statusCode = 500;
         res.end("Internal Server Error");
       }
     });
+    // delete a user
   } else if(req.method === "DELETE" && req.url.startsWith('/users/')){
     res.statusCode = 204;
     res.setHeader("Content-Type", "application/json");
@@ -44,6 +59,7 @@ const server = http.createServer(async (req, res) => {
     )
     res.end();
   }
+  //update a user
   else if(req.method === "PATCH" && req.url.startsWith('/users/')){
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
@@ -64,7 +80,7 @@ const server = http.createServer(async (req, res) => {
           res.end('User not found');
         }
       } catch (error) {
-        console.error('Error updating user:', error);
+        console.error('Error updating user:', error.message);
         res.statusCode = 500;
         res.end('Internal Server Error');
       }
